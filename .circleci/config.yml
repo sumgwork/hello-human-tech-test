@@ -5,19 +5,22 @@ jobs:
       - image: circleci/node:12.9.1-browsers
 
     working_directory: ~/repo
-steps:
-  - checkout
 
-  - restore_cache:
-    keys:
-      - v1-dependencies-{{ checksum "package.json" }}
-      - v1-dependencies-
+    steps:
+      - checkout
 
-  - run: yarn install
+      - restore_cache:
+        keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
 
-  - save_cache:
-    paths:
-      - node_modules
-    key: v1-dependencies-{{ checksum "package.json" }}
+      - run: yarn install
 
-  - run: yarn test
+      - save_cache:
+        paths:
+          - node_modules
+        key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run: yarn lint
+
+      - run: yarn test
